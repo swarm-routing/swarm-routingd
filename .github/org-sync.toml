@@ -1,0 +1,20 @@
+# org-sync configuration (swarm-routing/.github tools/org-sync).
+kind = "c-cpp"
+title = "swarm-routingd"
+dual = [""]
+
+[docs]
+arena_id = ""  # its id in swarm-routing.github.io site/hub/projects.json, once listed
+
+[settings]
+# GitHub settings as code: swarm-routing/.github tools/repo-settings (swarm-routing/.github#117).
+description = "swarm-routingd, the Linux userspace routing daemon that runs swarm-routing protocol cores over real sockets, netlink routes and a TUN device: a single-threaded epoll reactor on swarm-core's ports, for testbeds, CORE/EMANE and Shadow (planned)."
+homepage = ""  # none until the site lists it (swarm-routing/swarm-routing.github.io site/hub/projects.json)
+topics = ["linux", "routing-daemon", "netlink", "manet", "swarm-intelligence", "routing-protocol", "cpp23", "emane", "shadow"]
+ruleset = "protocol"
+# Only checks that run on every PR today. Add the build and test checks (core, ns-3, ...)
+# once their workflows exist and run on pull_request and merge_group.
+required_checks = ["check / org-sync", "headers / licence", "title / title", "review / coderabbit"]
+# Merge through a merge queue (swarm-routing/.github#130); every workflow behind a required
+# check also runs on merge_group.
+merge_queue = true
