@@ -6,8 +6,24 @@ section a task needs, not the whole file.
 
 ## Current state
 
-**Status: empty.** Describe the repository here.
+**Status: skeleton, deferred.** The org templates are applied; the CMake
+C++23 skeleton (`src/`, `test/`, #29) builds `swarm-routingd`, which answers
+`--version` and `--help` and routes nothing. The daemon itself is epic #3,
+deferred by org ROADMAP decision 23 until the maintainer re-plans it. Its
+original five children live in swarm-routing/.github (#255, #256, #258,
+#267, #548 there).
 
 ## Glossary
 
+- **RouteDecision**: what a protocol core returns; the daemon carries it out
+  as kernel routes and control messages (golden rule 10).
+- **`RTPROT_SWARM` (88)**: the rtnetlink route protocol number the daemon's
+  routes carry; it touches no other route.
+- **`swarm0`**: the TUN catch-all; packets with no route yet wait in the
+  bounded pending-packet queue.
+
 ## Open questions
+
+- The ladder in `docs/roadmap.md` is a proposal until the maintainer adopts it.
+- The `swarm-routingd` port in swarm-routing/vcpkg-registry does not exist
+  yet; `release.yml`'s `vcpkg-ports` needs it before the first release.

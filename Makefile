@@ -38,11 +38,22 @@ shell: ## an interactive shell in the dev image with this repo at /src
 	docker run --rm -it -v "$(CURDIR):/src" -w /src $(if $(PLATFORM),--platform $(PLATFORM)) $(NS3_IMAGE) bash
 
 headers: org-tools ## licence headers (org rule 1): the Go gate CI runs, in docker or built with go
-	"$(ORG_DIR)/tools/checks/check-headers.sh" --dual '' --core core/ .
+	"$(ORG_DIR)/tools/checks/check-headers.sh" --dual 'src/ test/' --core core/ .
 
 check: lint test headers org-sync-check ## everything CI gates on
 
 ci: check ## exactly what CI runs
+
+# The release asset reusable-release.yml publishes (.github/workflows/release.yml):
+# the source tarball of HEAD, which the swarm-routingd vcpkg port builds from.
+DIST_VERSION = $(shell cat VERSION)
+.PHONY: dist
+dist: ## the release asset: dist/swarm-routingd-<VERSION>.tar.gz, the source of HEAD
+	mkdir -p dist
+	git archive --format=tar.gz --prefix=swarm-routingd-$(DIST_VERSION)/ -o dist/swarm-routingd-$(DIST_VERSION).tar.gz HEAD
+	tar -xzf dist/swarm-routingd-$(DIST_VERSION).tar.gz -C dist
+	cmake -S dist/swarm-routingd-$(DIST_VERSION) -B dist/build && cmake --build dist/build -j && ctest --test-dir dist/build --output-on-failure
+	rm -rf dist/build dist/swarm-routingd-$(DIST_VERSION)
 
 # org-sync:begin org-tools
 # The org tooling (check-headers, org-sync): a shallow clone, refreshed to ORG_REF,

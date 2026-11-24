@@ -3,8 +3,9 @@
 name: Licence
 
 # The whole repository is MIT OR GPL-2.0-only (LICENSING.md). The input cannot
-# name the root, so name each top-level source directory in dual-roots as it is
-# added; until then every file still needs its SPDX line.
+# name the root, so each top-level source directory is named in dual-roots as
+# it is added (src/ and test/, the skeleton of #29); every file elsewhere
+# still needs its SPDX line.
 on:
   push:
     branches: [main]
@@ -18,5 +19,5 @@ jobs:
   headers:
     uses: swarm-routing/.github/.github/workflows/reusable-licence-check.yml@a3155ab8851bab4a54f41b770f22587afee30f2d # main@2026-11-24
     with:
-      dual-roots: ''
+      dual-roots: 'src/ test/'
       core-roots: ''
