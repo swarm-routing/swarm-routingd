@@ -106,7 +106,10 @@ This repository's own:
     input, who parses it, every privilege and why, and what is out of
     scope; a change that adds an input, a capability or a privilege updates
     it, and SECURITY.md's trust boundary (`.github/org-sync.toml`), in the
-    same PR. Untrusted bytes reach only the cores' bounds-checked readers.
+    same PR. Untrusted control-message bytes reach only the cores'
+    bounds-checked readers; the daemon's one parser of its own is the
+    bounds-checked, fuzz-tested reader of the fixed IP header fields of
+    `swarm0` packets (the destination the queue keys on), never a payload.
 13. **One thread, one clock.** A single-threaded `epoll` reactor; all time
     comes from `timerfd` through `IClock`, all signals through `signalfd`,
     so Shadow and CORE/EMANE run the binary unmodified (and Shadow

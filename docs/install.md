@@ -39,6 +39,17 @@ sudo apt-get update
 sudo apt-get install -y build-essential cmake ninja-build git curl zip unzip tar pkg-config iproute2
 ```
 
+To develop (`make lint`, `make check`), also clang-format 18, the major CI
+checks with; on Ubuntu 24.04:
+
+```bash
+sudo apt-get install -y clang-format-18
+sudo ln -sf /usr/bin/clang-format-18 /usr/local/bin/clang-format
+```
+
+On the other distributions, install their clang-format 18 package (the
+version `make doctor` compares against).
+
 Fedora 42:
 
 ```bash
@@ -59,8 +70,9 @@ git clone https://github.com/microsoft/vcpkg "$HOME/vcpkg"
 export VCPKG_ROOT="$HOME/vcpkg"
 ```
 
-Once the port exists, a `vcpkg-configuration.json` that adds the org
-registry:
+Once the port exists, save a `vcpkg-configuration.json` in the vcpkg
+instance root (`$VCPKG_ROOT/vcpkg-configuration.json`, where classic mode
+reads it) that adds the org registry:
 
 ```json
 {
@@ -90,7 +102,7 @@ commands in [SECURITY.md](../SECURITY.md) "Verifying what it ships".
 ```bash
 git clone https://github.com/swarm-routing/swarm-routingd.git
 cd swarm-routingd
-cmake -S . -B build -G Ninja
+cmake -S . -B build
 cmake --build build
 ctest --test-dir build --output-on-failure
 sudo cmake --install build   # /usr/local/sbin/swarm-routingd

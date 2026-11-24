@@ -30,7 +30,7 @@ vcpkg ([install.md](install.md)). `make check` fetches swarm-routing/.github's t
 
 ```bash
 make build                      # cmake -S . -B build && cmake --build build
-CMAKE_GENERATOR=Ninja make build  # the same with Ninja
+make clean && CMAKE_GENERATOR=Ninja make build  # Ninja: a fresh build/, the generator is cached
 ```
 
 ## Test

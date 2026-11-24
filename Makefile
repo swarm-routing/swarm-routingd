@@ -49,6 +49,7 @@ ci: check ## exactly what CI runs
 DIST_VERSION = $(shell cat VERSION)
 .PHONY: dist
 dist: ## the release asset: dist/swarm-routingd-<VERSION>.tar.gz, the source of HEAD
+	rm -rf dist/build dist/swarm-routingd-$(DIST_VERSION)
 	mkdir -p dist
 	git archive --format=tar.gz --prefix=swarm-routingd-$(DIST_VERSION)/ -o dist/swarm-routingd-$(DIST_VERSION).tar.gz HEAD
 	tar -xzf dist/swarm-routingd-$(DIST_VERSION).tar.gz -C dist

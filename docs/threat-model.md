@@ -29,7 +29,7 @@ and Shadow.
 | Input | Trusted? | Who parses it |
 |-------|----------|---------------|
 | UDP control datagrams on the routing interfaces | **no**: any host on the link can send them | the protocol core's bounds-checked little-endian reader (org golden rule 3), at the pinned swarm-core release; the daemon only copies the bytes in |
-| Packets the kernel hands it on `swarm0` | **no**: any local or forwarded sender | only the IP header fields the queue needs (version, length, destination), bounds-checked |
+| Packets the kernel hands it on `swarm0` | **no**: any local or forwarded sender | the daemon's only parser of untrusted bytes: a bounds-checked, fuzz-tested reader of the fixed IPv4/IPv6 header fields the queue keys on (version, total length, destination); the payload stays opaque and is never read |
 | rtnetlink and nl80211 replies | kernel, trusted; still length-checked (`NLMSG_OK`, `RTA_OK`) | the netlink layer of the daemon |
 | Command line and config file | the operator, trusted | the daemon's option parser; a bad value is a usage error, never a default |
 | sysfs energy, gpsd location | the host, trusted for integrity, not for availability | the platform providers; a missing or malformed value is reported, not guessed |
