@@ -1,0 +1,56 @@
+# Copyright (c) 2026 Daniel Joppi (https://github.com/swarm-routing)
+# SPDX-License-Identifier: MIT OR GPL-2.0-only
+name: Build
+
+# The skeleton builds and its tests pass (#29): `make lint` and `make test`,
+# on the oldest supported distribution's toolchain (docs/install.md). Not a
+# required check yet: add `build / build` to `[settings] required_checks` in
+# .github/org-sync.toml once it has run green on main. No `paths:` filter, so
+# it can become one.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  merge_group:  # the merge queue runs the required checks on each group (swarm-routing/.github#130)
+
+permissions:
+  contents: read
+
+# A newer push to the same pull request cancels this run (swarm-routing/.github#505).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    name: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Harden the runner (audit egress)
+        uses: step-security/harden-runner@aebdcf6156ab6691adf63218240e476564a1ed4c # v2.23.0
+        timeout-minutes: 2  # its download and start take seconds (swarm-routing/.github#164)
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Install the toolchain
+        timeout-minutes: 5
+        run: |
+          ok=
+          for i in 1 2 3; do
+            if sudo apt-get update --error-on=any; then ok=1; break; fi
+            sleep $((i * 10))
+          done
+          [ -n "$ok" ] || { echo "::error::apt-get update failed three times (an Ubuntu mirror outage?)"; exit 1; }
+          sudo apt-get install -y --no-install-recommends cmake ninja-build g++ clang-format-18
+          sudo ln -sf /usr/bin/clang-format-18 /usr/local/bin/clang-format
+      - name: Lint
+        timeout-minutes: 2
+        run: make lint
+      - name: Build and test
+        timeout-minutes: 5
+        env:
+          CMAKE_GENERATOR: Ninja
+        run: make test

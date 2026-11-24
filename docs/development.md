@@ -1,13 +1,15 @@
 # Developer guide
 
-swarm-routingd is planned (swarm-routing/.github#672): no code is here yet, only the
-org's templates and settings. This guide says what runs today; each section
-grows with the code. What it will hold: a C++23 CMake project.
+swarm-routingd is planned and deferred (swarm-routing/.github#672, org ROADMAP
+decision 23): a C++23 CMake skeleton (#29) and the org's templates. This
+guide says what runs today; each section grows with the code.
 
 ## Prerequisites
 
 GNU Make, git, Python 3.11 or newer (the org tooling `make check` fetches),
-and Docker for `make shell`. Nothing else until code lands.
+CMake 3.28+, a C++23 compiler (GCC 13+ or Clang 18+), Ninja (optional),
+clang-format 18 for `make lint`, and Docker for `make shell`. Per
+distribution: [install.md](install.md).
 
 ## Get the code
 
@@ -20,17 +22,22 @@ No submodules or sibling checkouts are needed.
 
 ## Dependencies
 
-None yet. `make check` fetches swarm-routing/.github's tooling into
+None beyond the C++ standard library yet; swarm-core will come through
+vcpkg ([install.md](install.md)). `make check` fetches swarm-routing/.github's tooling into
 `~/.cache/swarm-routing/dotgithub` (the licence-header gate and org-sync).
 
 ## Build
 
-Nothing to build yet: `make build` and `make test` say `no CMakeLists.txt yet` until the CMake project exists.
+```bash
+make build                      # cmake -S . -B build && cmake --build build
+make clean && CMAKE_GENERATOR=Ninja make build  # Ninja: a fresh build/, the generator is cached
+```
 
 ## Test
 
-`make check` is the gate today: lint, test, licence headers and the
-org-sync check, as CI runs them.
+`make test` builds and runs the ctest suite (`test/cli_test.cc` and the
+binary's `--version`). `make check` is the gate: lint, test, licence
+headers and the org-sync check, as CI runs them.
 
 ```bash
 make check
@@ -38,7 +45,11 @@ make check
 
 ## Run
 
-Nothing runs yet.
+```bash
+./build/swarm-routingd --version
+```
+
+Only `--version` and `--help` work; the daemon is epic #3.
 
 ## Docker and dev containers
 
@@ -54,6 +65,8 @@ headers: `make headers`, the org's `check-headers` gate.
 
 | Workflow | What it checks | Required |
 | --- | --- | --- |
+| `build.yml` | `make lint`, then `make test` (the skeleton builds, its tests pass) | not yet (add `build / build` once green on `main`) |
+| `release.yml` | the org release pipeline, on dispatch or a merged bump PR | no |
 | `org-sync.yml` | the org-managed files match the pinned templates | yes (`check / org-sync`) |
 | `licence.yml` | SPDX headers and the licence texts | yes (`headers / licence`) |
 | `pr-title.yml` | the PR title is a lowercase Conventional Commit | yes (`title / title`) |
@@ -68,9 +81,13 @@ repos/swarm-routing/swarm-routingd/rules/branches/main`), applied from
 
 ## Release
 
-Nothing is released yet. A version is cut as
+Nothing is released yet, and nothing is until the maintainer re-plans epic
+#3. A version is cut on request as
 [CONTRIBUTING "Cutting a release"](https://github.com/swarm-routing/.github/blob/main/CONTRIBUTING.md#cutting-a-release)
-says, once a `release.yml` and a ladder in `docs/roadmap.md` exist.
+says: `release.yml` (dispatch `dry-run`, then `bump`), against the ladder in
+[roadmap.md](roadmap.md). The asset is `make dist`'s source tarball; the
+release opens the `swarm-routingd` port bump in swarm-routing/vcpkg-registry
+(`vcpkg-ports`), so the port must exist there first.
 
 ## Troubleshooting
 

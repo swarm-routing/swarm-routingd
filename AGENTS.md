@@ -7,7 +7,7 @@ before changing anything. Org-wide conventions:
 
 ## What this repo is
 
-**Status: planned (swarm-routing/.github#672).** Nothing is built yet: the plan is #3.
+**Status: planned, deferred (org ROADMAP decision 23).** A building, tested skeleton only (`swarm-routingd --version`, #29); the daemon's plan is epic #3, and no daemon code lands until the maintainer re-plans it. Install and supported distributions: [`docs/install.md`](docs/install.md); release ladder: [`docs/roadmap.md`](docs/roadmap.md); threat model: [`docs/threat-model.md`](docs/threat-model.md).
 
 swarm-routingd, the Linux runtime of the org's hexagonal layout (swarm-routing/.github#672, layer 2): a userspace daemon that runs the protocol cores on swarm-core's ports over real sockets: a single-threaded `epoll` reactor with `timerfd` and `signalfd`, routes synced through rtnetlink, a TUN catch-all with a pending-packet queue. CORE/EMANE and Shadow run it unmodified.
 
@@ -16,6 +16,8 @@ swarm-routingd, the Linux runtime of the org's hexagonal layout (swarm-routing/.
 ```bash
 make help    # the org's standard target names: build, test, lint, format, check, clean, shell, ci
 make check   # the local gates: lint, test, licence headers, org-sync (CI also checks the PR title and the review gate)
+make test    # CMake C++23 build of src/ and test/, then ctest (CI: build.yml)
+make dist    # the release asset: dist/swarm-routingd-<VERSION>.tar.gz, built and tested from the tarball
 ```
 
 ## Golden rules (invariants — do not break)
@@ -83,6 +85,35 @@ Org-wide (1–9), then this repo's own.
 9. **Nothing shipped depends on `.claude/`.** Skills hold procedures; scripts
    that anything shipped needs live in `tools/` (AntHocNet ADR-0014).
 <!-- org-sync:end org-rules -->
+
+This repository's own:
+
+10. **An adapter, not a router.** The daemon hosts a protocol's `core/` on
+    swarm-core's ports and carries out the `RouteDecision`s it returns: it
+    writes the kernel routes and sends the control messages on its own
+    socket. It makes no routing decision, holds no protocol state of its
+    own, and adds no `IRouteTable`/`ITransport` port for a core to call
+    (epic #3; the protocols' golden rule 10). A behaviour a protocol needs
+    goes into that protocol's `core/` or into swarm-core, never here.
+11. **Least capability and privilege.** It holds `CAP_NET_ADMIN` and nothing
+    else, as an unprivileged user, never root by design; binds an
+    unprivileged port; spawns no thread and `exec`s no program (no shelling
+    out to `ip`); touches only routes with its own protocol number
+    (`RTPROT_SWARM` = 88). A new capability, privilege, socket, file or
+    dependency needs its reason in the threat model, in the same PR.
+12. **The threat model is part of the code.**
+    [`docs/threat-model.md`](docs/threat-model.md) names every untrusted
+    input, who parses it, every privilege and why, and what is out of
+    scope; a change that adds an input, a capability or a privilege updates
+    it, and SECURITY.md's trust boundary (`.github/org-sync.toml`), in the
+    same PR. Untrusted control-message bytes reach only the cores'
+    bounds-checked readers; the daemon's one parser of its own is the
+    bounds-checked, fuzz-tested reader of the fixed IP header fields of
+    `swarm0` packets (the destination the queue keys on), never a payload.
+13. **One thread, one clock.** A single-threaded `epoll` reactor; all time
+    comes from `timerfd` through `IClock`, all signals through `signalfd`,
+    so Shadow and CORE/EMANE run the binary unmodified (and Shadow
+    reproducibly, golden rule 5).
 
 ## Conventions
 

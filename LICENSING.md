@@ -8,6 +8,8 @@ Licensed per directory, as AntHocNet
 | Path | Licence |
 |------|---------|
 | `*` | `MIT OR GPL-2.0-only` |
+| `src/` (the daemon) | `MIT OR GPL-2.0-only` |
+| `test/` | `MIT OR GPL-2.0-only` |
 
 <!-- org-sync:begin licence-texts -->
 Texts: [`LICENSE`](LICENSE) (GPL-2.0) and [`LICENSE-MIT`](LICENSE-MIT) (the
