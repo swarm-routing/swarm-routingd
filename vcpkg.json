@@ -1,0 +1,13 @@
+{
+  "$comment": "The daemon's dependencies through vcpkg in manifest mode (swarm-routing/.github#489, #31). The override pins swarm-core's exact version: the one swarm-core.lock names (the `swarm-core / pin` check keeps them equal). Bumped by org-bot, never by hand.",
+  "dependencies": [
+    "swarm-core"
+  ],
+  "overrides": [
+    {
+      "name": "swarm-core",
+      "version": "2.0.0",
+      "port-version": 0
+    }
+  ]
+}

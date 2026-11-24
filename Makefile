@@ -18,11 +18,18 @@ BUILD_ARGS ?=
 help: ## list the targets
 	@awk 'BEGIN{FS=":.*## "} /^[a-zA-Z0-9_-]+:.*## /{printf "  %-16s %s\n", $$1, $$2}' $(MAKEFILE_LIST)
 
+# swarm-core comes through vcpkg (#31, docs/install.md): the toolchain of
+# $VCPKG_ROOT (the org's setup-vcpkg action sets it in CI), else of the
+# vcpkg GitHub's runner images ship ($VCPKG_INSTALLATION_ROOT, the release
+# build's runner); with neither, CMAKE_PREFIX_PATH must name a swarm-core package.
+VCPKG_ROOT ?= $(VCPKG_INSTALLATION_ROOT)
+CMAKE_ARGS ?= $(if $(VCPKG_ROOT),-DCMAKE_TOOLCHAIN_FILE=$(VCPKG_ROOT)/scripts/buildsystems/vcpkg.cmake)
+
 build: ## build what this repo ships
-	if [ -f CMakeLists.txt ]; then cmake -S . -B build && cmake --build build -j; else echo "make build: no CMakeLists.txt yet"; fi
+	cmake -S . -B build $(CMAKE_ARGS) && cmake --build build -j
 
 test: ## the fast tests CI runs on every PR
-	if [ -f CMakeLists.txt ]; then cmake -S . -B build && cmake --build build -j && ctest --test-dir build --output-on-failure; else echo "make test: no CMakeLists.txt yet"; fi
+	cmake -S . -B build $(CMAKE_ARGS) && cmake --build build -j && ctest --test-dir build --output-on-failure
 
 lint: ## static checks, no changes
 	git ls-files "*.h" "*.cc" "*.cpp" "*.hpp" | xargs -r clang-format --dry-run --Werror
@@ -53,7 +60,7 @@ dist: ## the release asset: dist/swarm-routingd-<VERSION>.tar.gz, the source of 
 	mkdir -p dist
 	git archive --format=tar.gz --prefix=swarm-routingd-$(DIST_VERSION)/ -o dist/swarm-routingd-$(DIST_VERSION).tar.gz HEAD
 	tar -xzf dist/swarm-routingd-$(DIST_VERSION).tar.gz -C dist
-	cmake -S dist/swarm-routingd-$(DIST_VERSION) -B dist/build && cmake --build dist/build -j && ctest --test-dir dist/build --output-on-failure
+	cmake -S dist/swarm-routingd-$(DIST_VERSION) -B dist/build $(CMAKE_ARGS) && cmake --build dist/build -j && ctest --test-dir dist/build --output-on-failure
 	rm -rf dist/build dist/swarm-routingd-$(DIST_VERSION)
 
 # org-sync:begin org-tools

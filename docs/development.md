@@ -22,14 +22,17 @@ No submodules or sibling checkouts are needed.
 
 ## Dependencies
 
-None beyond the C++ standard library yet; swarm-core will come through
-vcpkg ([install.md](install.md)). `make check` fetches swarm-routing/.github's tooling into
+swarm-core, through vcpkg in manifest mode (`vcpkg.json`,
+`vcpkg-configuration.json`, `swarm-core.lock`; AGENTS.md "Dependencies").
+Set up vcpkg once ([install.md](install.md) "Through vcpkg") and export
+`VCPKG_ROOT`; `make build`/`test`/`dist` pass its toolchain to CMake, and the
+first configure installs swarm-core into `build/vcpkg_installed`. `make check` fetches swarm-routing/.github's tooling into
 `~/.cache/swarm-routing/dotgithub` (the licence-header gate and org-sync).
 
 ## Build
 
 ```bash
-make build                      # cmake -S . -B build && cmake --build build
+make build                      # cmake -S . -B build (vcpkg toolchain of $VCPKG_ROOT) && cmake --build build
 make clean && CMAKE_GENERATOR=Ninja make build  # Ninja: a fresh build/, the generator is cached
 ```
 

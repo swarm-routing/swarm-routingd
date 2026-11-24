@@ -34,6 +34,14 @@ and Shadow.
 | Command line and config file | the operator, trusted | the daemon's option parser; a bad value is a usage error, never a default |
 | sysfs energy, gpsd location | the host, trusted for integrity, not for availability | the platform providers; a missing or malformed value is reported, not guessed |
 
+## Dependencies
+
+| Dependency | Why | How it is trusted |
+|------------|-----|-------------------|
+| swarm-core (static library, `swarm::core`) | the ports and primitives the cores run on, and their bounds-checked wire readers | a signed org release (`swarm-core.lock`); vcpkg builds its tarball checked by SHA512 in the swarm-routing/vcpkg-registry port at the pinned baseline |
+
+Nothing else beyond the C++ standard library and libc (#31).
+
 ## Privileges: the least it needs
 
 | Needs | For | How it is limited |

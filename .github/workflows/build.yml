@@ -45,6 +45,15 @@ jobs:
           [ -n "$ok" ] || { echo "::error::apt-get update failed three times (an Ubuntu mirror outage?)"; exit 1; }
           sudo apt-get install -y --no-install-recommends cmake ninja-build g++ clang-format-18
           sudo ln -sf /usr/bin/clang-format-18 /usr/local/bin/clang-format
+      # swarm-core from its vcpkg port (#31, swarm-routing/.github#489): the tool at
+      # the org's pinned commit; sets VCPKG_ROOT, which `make test` reads.
+      - name: vcpkg
+        uses: swarm-routing/.github/.github/actions/setup-vcpkg@a3155ab8851bab4a54f41b770f22587afee30f2d # main@2026-11-24
+        timeout-minutes: 8
+        with:
+          # one small port; the NuGet cache's mono install costs more than it saves
+          # (measured in swarm-routing/ARA's core.yml, swarm-routing/.github#489)
+          binary-cache: 'off'
       - name: Lint
         timeout-minutes: 2
         run: make lint

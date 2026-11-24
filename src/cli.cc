@@ -17,10 +17,15 @@ constexpr std::string_view kUsage =
 
 std::string_view version() { return SWARM_ROUTINGD_VERSION; }
 
+std::string_view swarm_core_version() {
+  return SWARM_ROUTINGD_SWARM_CORE_VERSION;
+}
+
 int run_cli(std::span<const std::string_view> args, std::ostream &out,
             std::ostream &err) {
   if (args.size() == 1 && args[0] == "--version") {
-    out << "swarm-routingd " << version() << '\n';
+    out << "swarm-routingd " << version() << " (swarm-core "
+        << swarm_core_version() << ")\n";
     return 0;
   }
   if (args.size() == 1 && (args[0] == "--help" || args[0] == "-h")) {

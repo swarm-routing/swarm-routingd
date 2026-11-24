@@ -14,6 +14,9 @@ namespace swarm::routingd {
 // The version CMake reads from VERSION.
 std::string_view version();
 
+// The swarm-core release the build found (find_package, #31).
+std::string_view swarm_core_version();
+
 // Runs the command line `args` (without argv[0]); writes to `out` and `err`
 // and returns the process exit status: 0 for --version and --help, 2 for a
 // usage error, 1 when no option is given (the daemon itself is not built yet).
