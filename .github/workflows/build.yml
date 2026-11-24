@@ -3,10 +3,9 @@
 name: Build
 
 # The skeleton builds and its tests pass (#29): `make lint` and `make test`,
-# on the oldest supported distribution's toolchain (docs/install.md). Not a
-# required check yet: add `build / build` to `[settings] required_checks` in
-# .github/org-sync.toml once it has run green on main. No `paths:` filter, so
-# it can become one.
+# on the oldest supported distribution's toolchain (docs/install.md). A
+# required check, `build` (`[settings] required_checks` in
+# .github/org-sync.toml, #34), so no `paths:` filter.
 on:
   push:
     branches: [main]
