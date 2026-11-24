@@ -40,15 +40,16 @@ sudo apt-get install -y build-essential cmake ninja-build git curl zip unzip tar
 ```
 
 To develop (`make lint`, `make check`), also clang-format 18, the major CI
-checks with; on Ubuntu 24.04:
+checks with; on Ubuntu 24.04 and Debian 13 (package `clang-format-18`):
 
 ```bash
 sudo apt-get install -y clang-format-18
 sudo ln -sf /usr/bin/clang-format-18 /usr/local/bin/clang-format
 ```
 
-On the other distributions, install their clang-format 18 package (the
-version `make doctor` compares against).
+On Fedora 42, `sudo dnf install -y clang18-tools-extra`, which provides
+`clang-format-18`; link it the same way. The symlink replaces any existing
+`/usr/local/bin/clang-format`.
 
 Fedora 42:
 
