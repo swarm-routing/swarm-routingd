@@ -100,18 +100,23 @@ commands in [SECURITY.md](../SECURITY.md) "Verifying what it ships".
 
 ## From source (works today)
 
+swarm-core comes through vcpkg in manifest mode: with vcpkg set up as
+above (`VCPKG_ROOT`), the configure step installs the swarm-core release
+`vcpkg.json` pins, from swarm-routing/vcpkg-registry, into `build/`. No
+`vcpkg-configuration.json` of your own is needed: the repository has one.
+
 ```bash
 git clone https://github.com/swarm-routing/swarm-routingd.git
 cd swarm-routingd
-cmake -S . -B build
+cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"
 cmake --build build
 ctest --test-dir build --output-on-failure
 sudo cmake --install build   # /usr/local/sbin/swarm-routingd
-swarm-routingd --version
+swarm-routingd --version     # swarm-routingd 0.0.0 (swarm-core 2.0.0)
 ```
 
-When the daemon depends on swarm-core, the configure step takes the vcpkg
-toolchain: `-DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake"`.
+`make test` does the same, reading `$VCPKG_ROOT`. Without vcpkg, point
+`CMAKE_PREFIX_PATH` at an installed swarm-core package instead.
 
 ## Running it
 

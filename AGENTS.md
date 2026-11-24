@@ -20,6 +20,28 @@ make test    # CMake C++23 build of src/ and test/, then ctest (CI: build.yml)
 make dist    # the release asset: dist/swarm-routingd-<VERSION>.tar.gz, built and tested from the tarball
 ```
 
+`make build`/`test`/`dist` configure with the vcpkg toolchain of `$VCPKG_ROOT`
+(else `$VCPKG_INSTALLATION_ROOT`, GitHub's runner images); see Dependencies.
+
+## Dependencies
+
+- **swarm-core**: through vcpkg in manifest mode (swarm-routing/.github#489,
+  #31). `vcpkg.json` at the root depends on `swarm-core` and pins its version
+  and port-version with an `overrides` entry; `vcpkg-configuration.json` takes
+  the port from swarm-routing/vcpkg-registry at a `baseline` commit, and
+  vcpkg's helper ports from the builtin registry at the commit the org's
+  `setup-vcpkg` action pins. The root `CMakeLists.txt` calls
+  `find_package(swarm-core CONFIG REQUIRED)` and links `swarm::core`; CI
+  (`build.yml`) sets vcpkg up with `setup-vcpkg`.
+- **`swarm-core.lock`** names the same release (repository, tag, commit,
+  version, SHA256 of its asset), rendered by swarm-routing/.github
+  `tools/checks/release_lock.py`, never typed. Bumps come from org-bot.
+- **No `swarm-core / pin` check yet**: `check-swarm-core-pin.py` knows a
+  protocol's `core/` in vcpkg mode and the ns-3 adapter's root lock, not a
+  root vcpkg consumer; until it does, keep the override, the lock and the
+  registry baseline on one release by hand-checking a bump PR.
+- No ns-3 dependency: the daemon is not an ns-3 module.
+
 ## Golden rules (invariants — do not break)
 
 Org-wide (1–9), then this repo's own.

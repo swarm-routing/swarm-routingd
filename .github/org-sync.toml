@@ -4,6 +4,9 @@ kind = "c-cpp"
 bestpractices_project = "17077"
 title = "swarm-routingd"
 dual = [""]
+# The org's `dependencies` section describes a protocol's core/ and ns-3 build; the daemon has
+# neither (swarm-core through vcpkg at the root, no ns-3), so AGENTS.md keeps its own (#31).
+skip = ["AGENTS.md#dependencies"]
 # CITATION.cff seed and cite badge. Once Zenodo archives a release: set zenodo_concept = "<record id>"
 # (read from Zenodo), then `org_sync.py reseed CITATION.cff` so CITATION.cff names the DOI.
 citation = true

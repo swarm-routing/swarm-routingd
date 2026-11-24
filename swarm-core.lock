@@ -1,0 +1,13 @@
+# The swarm-core release the daemon builds on (#31; swarm-routing/.github
+# CONTRIBUTING "Dependencies"): vcpkg.json's override pins its version, and
+# the swarm-routing/vcpkg-registry baseline in vcpkg-configuration.json holds
+# it. The `swarm-core / pin` check verifies the lock against the release.
+# Never edit it by hand: org-bot's swarm-core-pin task opens the bump PR
+# (swarm-routing/.github tools/checks/check-swarm-core-pin.py --bump, which
+# writes it with tools/checks/release_lock.py).
+SWARM_CORE_REPO=swarm-routing/swarm-core
+SWARM_CORE_TAG=v2.0.0
+SWARM_CORE_COMMIT=5fb7c180ea3a88a71b99b7c3d11dc8e2eeccb7d4
+SWARM_CORE_VERSION=2.0.0
+SWARM_CORE_ASSET=swarm-core-2.0.0.tar.gz
+SWARM_CORE_SHA256=02d241f3ef02a5850ce8b38986001044bd030b7b7d9e13c1a2bf29094d4f3965

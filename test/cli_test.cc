@@ -44,8 +44,10 @@ int main() {
 
   auto v = run(std::array<std::string_view, 1>{"--version"});
   expect(v.status == 0, "--version exits 0");
-  expect(v.out == "swarm-routingd "s + version + "\n",
-         "--version prints the name and VERSION");
+  const std::string core{swarm::routingd::swarm_core_version()};
+  expect(!core.empty(), "the build found a swarm-core version");
+  expect(v.out == "swarm-routingd "s + version + " (swarm-core " + core + ")\n",
+         "--version prints the name, VERSION and the swarm-core release");
   expect(v.err.empty(), "--version writes nothing to stderr");
 
   auto h = run(std::array<std::string_view, 1>{"--help"});
