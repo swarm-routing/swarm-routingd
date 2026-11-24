@@ -44,7 +44,9 @@ topics = ["linux", "routing-daemon", "netlink", "manet", "swarm-intelligence", "
 ruleset = "protocol"
 # Only checks that run on every PR today. Add the build and test checks (core, ns-3, ...)
 # once their workflows exist and run on pull_request and merge_group.
-required_checks = ["check / org-sync", "headers / licence", "title / title", "review / coderabbit"]
+# build: build.yml's job (`make lint`, `make test`), green on main since #30 (#34); a plain job,
+# so its check run is `build`, not `build / build`.
+required_checks = ["check / org-sync", "headers / licence", "title / title", "review / coderabbit", "build"]
 # Merge through a merge queue (swarm-routing/.github#130); every workflow behind a required
 # check also runs on merge_group.
 merge_queue = true

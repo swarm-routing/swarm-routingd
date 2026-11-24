@@ -65,7 +65,7 @@ headers: `make headers`, the org's `check-headers` gate.
 
 | Workflow | What it checks | Required |
 | --- | --- | --- |
-| `build.yml` | `make lint`, then `make test` (the skeleton builds, its tests pass) | not yet (add `build / build` once green on `main`) |
+| `build.yml` | `make lint`, then `make test` (the skeleton builds, its tests pass) | yes (`build`) |
 | `release.yml` | the org release pipeline, on dispatch or a merged bump PR | no |
 | `org-sync.yml` | the org-managed files match the pinned templates | yes (`check / org-sync`) |
 | `licence.yml` | SPDX headers and the licence texts | yes (`headers / licence`) |
