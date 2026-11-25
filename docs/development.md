@@ -1,7 +1,8 @@
 # Developer guide
 
-swarm-routingd is planned and deferred (swarm-routing/.github#672, org ROADMAP
-decision 23): a C++23 CMake skeleton (#29) and the org's templates. This
+swarm-routingd is early and partly deferred (swarm-routing/.github#672, org
+ROADMAP decision 23): a C++23 CMake skeleton (#29) on swarm-core through
+vcpkg (#31), and the org's templates. This
 guide says what runs today; each section grows with the code.
 
 ## Prerequisites

@@ -7,7 +7,7 @@ before changing anything. Org-wide conventions:
 
 ## What this repo is
 
-**Status: planned, deferred (org ROADMAP decision 23).** A building, tested skeleton only (`swarm-routingd --version`, #29); the daemon's plan is epic #3, and no daemon code lands until the maintainer re-plans it. Install and supported distributions: [`docs/install.md`](docs/install.md); release ladder: [`docs/roadmap.md`](docs/roadmap.md); threat model: [`docs/threat-model.md`](docs/threat-model.md).
+**Status: early, partly deferred.** A building, tested skeleton (`swarm-routingd --version`, #29) on swarm-core through vcpkg (#31). Epic #3 is re-planned up to #31 (maintainer, 2026-11-24); the reactor (#32) waits for swarm-routing/.github#894 and the maintainer's go-ahead, and nothing beyond it lands until the maintainer re-plans it (org ROADMAP decision 23). Install and supported distributions: [`docs/install.md`](docs/install.md); release ladder: [`docs/roadmap.md`](docs/roadmap.md); threat model: [`docs/threat-model.md`](docs/threat-model.md).
 
 swarm-routingd, the Linux runtime of the org's hexagonal layout (swarm-routing/.github#672, layer 2): a userspace daemon that runs the protocol cores on swarm-core's ports over real sockets: a single-threaded `epoll` reactor with `timerfd` and `signalfd`, routes synced through rtnetlink, a TUN catch-all with a pending-packet queue. CORE/EMANE and Shadow run it unmodified.
 
