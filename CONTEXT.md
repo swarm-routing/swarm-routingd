@@ -6,12 +6,13 @@ section a task needs, not the whole file.
 
 ## Current state
 
-**Status: skeleton, deferred.** The org templates are applied; the CMake
-C++23 skeleton (`src/`, `test/`, #29) builds `swarm-routingd`, which answers
-`--version` and `--help` and routes nothing. The daemon itself is epic #3,
-deferred by org ROADMAP decision 23 until the maintainer re-plans it. Its
-original five children live in swarm-routing/.github (#255, #256, #258,
-#267, #548 there).
+**Status: skeleton on swarm-core, partly deferred.** The org templates are
+applied; the CMake C++23 skeleton (`src/`, `test/`, #29) builds
+`swarm-routingd` on swarm-core 2.0.0 through vcpkg (#31), answers
+`--version` and `--help`, and routes nothing. The daemon itself is epic #3:
+re-planned up to #31 on 2026-11-24, the rest deferred by org ROADMAP decision
+23 until the maintainer re-plans it. Its original five children live in
+swarm-routing/.github (#255, #256, #258, #267, #548 there).
 
 ## Glossary
 
@@ -24,6 +25,7 @@ original five children live in swarm-routing/.github (#255, #256, #258,
 
 ## Open questions
 
-- The ladder in `docs/roadmap.md` is a proposal until the maintainer adopts it.
+- `check-swarm-core-pin.py` has no root-vcpkg layout yet
+  (swarm-routing/.github#894), so there is no `swarm-core / pin` check here.
 - The `swarm-routingd` port in swarm-routing/vcpkg-registry does not exist
   yet; `release.yml`'s `vcpkg-ports` needs it before the first release.

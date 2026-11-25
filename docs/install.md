@@ -1,7 +1,7 @@
 # Install
 
 swarm-routingd runs on Linux only (`epoll`, `timerfd`, `signalfd`,
-rtnetlink, TUN). **No release exists yet** (epic #3 is deferred): what
+rtnetlink, TUN). **No release exists yet** (epic #3 is in its first steps): what
 installs today is the skeleton (#29), which answers `--version` and
 `--help` and routes nothing. This page says how it will install, and what
 works now.

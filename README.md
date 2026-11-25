@@ -13,7 +13,7 @@
 
 swarm-routingd, the Linux runtime of the org's hexagonal layout (swarm-routing/.github#672, layer 2): a userspace daemon that runs the protocol cores on swarm-core's ports over real sockets: a single-threaded `epoll` reactor with `timerfd` and `signalfd`, routes synced through rtnetlink, a TUN catch-all with a pending-packet queue. CORE/EMANE and Shadow run it unmodified.
 
-**Status: planned, deferred** (org ROADMAP decision 23). Only a building, tested skeleton exists (`swarm-routingd --version`); the plan is epic #3 and swarm-routing/.github#672, the release ladder [docs/roadmap.md](docs/roadmap.md).
+**Status: early, partly deferred.** A building, tested skeleton on swarm-core 2.0.0 through vcpkg (`swarm-routingd --version`); no routing yet. Epic #3 is re-planned up to #31; the reactor (#32) and the rest stay deferred (org ROADMAP decision 23) until the maintainer re-plans them. Plan: epic #3 and swarm-routing/.github#672; release ladder (adopted 2026-11-25): [docs/roadmap.md](docs/roadmap.md).
 
 - **Install:** [docs/install.md](docs/install.md): the supported Linux distributions, the required tools, through vcpkg or from source.
 - **Threat model:** [docs/threat-model.md](docs/threat-model.md): the untrusted inputs, the one capability it holds (`CAP_NET_ADMIN`) and why, what is out of scope. Reporting: [SECURITY.md](SECURITY.md).
