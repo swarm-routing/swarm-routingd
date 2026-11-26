@@ -25,7 +25,5 @@ swarm-routing/.github (#255, #256, #258, #267, #548 there).
 
 ## Open questions
 
-- `check-swarm-core-pin.py` has no root-vcpkg layout yet
-  (swarm-routing/.github#894), so there is no `swarm-core / pin` check here.
 - The `swarm-routingd` port in swarm-routing/vcpkg-registry does not exist
   yet; `release.yml`'s `vcpkg-ports` needs it before the first release.
