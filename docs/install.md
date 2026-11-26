@@ -112,7 +112,7 @@ cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE="$VCPKG_ROOT/scripts/buildsystems/vcp
 cmake --build build
 ctest --test-dir build --output-on-failure
 sudo cmake --install build   # /usr/local/sbin/swarm-routingd
-swarm-routingd --version     # swarm-routingd 0.0.0 (swarm-core 2.0.0)
+swarm-routingd --version     # swarm-routingd 0.0.0 (swarm-core 2.1.0)
 ```
 
 `make test` does the same, reading `$VCPKG_ROOT`. Without vcpkg, point

@@ -8,7 +8,7 @@ section a task needs, not the whole file.
 
 **Status: skeleton on swarm-core, partly deferred.** The org templates are
 applied; the CMake C++23 skeleton (`src/`, `test/`, #29) builds
-`swarm-routingd` on swarm-core 2.0.0 through vcpkg (#31), answers
+`swarm-routingd` on swarm-core 2.1.0 through vcpkg (#31), answers
 `--version` and `--help`, and routes nothing. The daemon itself is epic #3:
 re-planned up to #31 on 2026-11-24, the rest deferred by org ROADMAP decision
 23 until the maintainer re-plans it. Its original five children live in
