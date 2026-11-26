@@ -1,0 +1,22 @@
+# Copyright (c) 2026 Daniel Joppi (https://github.com/swarm-routing)
+# SPDX-License-Identifier: MIT OR GPL-2.0-only
+name: swarm-core
+
+# `swarm-core / pin` (swarm-routing/.github#958): swarm-core.lock, the
+# vcpkg.json override and the vcpkg-configuration.json registry baseline name
+# one swarm-core release, and the lock verifies against it (AGENTS.md
+# "Dependencies"). Not org-managed: the caller of
+# swarm-routing/.github reusable-swarm-core-pin.yml. Runs on every PR (no
+# `paths:` filter), so it can be a required check.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  merge_group:  # the merge queue runs the required checks on each group (swarm-routing/.github#130)
+
+permissions:
+  contents: read
+
+jobs:
+  swarm-core:
+    uses: swarm-routing/.github/.github/workflows/reusable-swarm-core-pin.yml@35891e64b7ad5bea0c7aba1292518fc2484e4a82 # main@2026-11-26

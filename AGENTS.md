@@ -36,10 +36,14 @@ make dist    # the release asset: dist/swarm-routingd-<VERSION>.tar.gz, built an
 - **`swarm-core.lock`** names the same release (repository, tag, commit,
   version, SHA256 of its asset), rendered by swarm-routing/.github
   `tools/checks/release_lock.py`, never typed. Bumps come from org-bot.
-- **No `swarm-core / pin` check yet**: `check-swarm-core-pin.py` knows a
-  protocol's `core/` in vcpkg mode and the ns-3 adapter's root lock, not a
-  root vcpkg consumer; until it does, keep the override, the lock and the
-  registry baseline on one release by hand-checking a bump PR.
+- **`swarm-core / pin`** (`.github/workflows/swarm-core-pin.yml`, calling
+  swarm-routing/.github `reusable-swarm-core-pin.yml`): checks this root
+  vcpkg consumer (swarm-routing/.github#958): the lock verifies against the
+  release, the root `CMakeLists.txt` finds the package, the override pins
+  the lock's version, and the registry baseline is a commit on
+  swarm-routing/vcpkg-registry `main` holding it. A newer swarm-core release
+  is a warning on a PR or merge group, red on `main` only while org-bot's
+  `swarm-core-pin` bump PR (which moves all three) is open.
 - No ns-3 dependency: the daemon is not an ns-3 module.
 
 ## Golden rules (invariants — do not break)
