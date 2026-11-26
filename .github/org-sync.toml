@@ -49,7 +49,9 @@ ruleset = "protocol"
 # once their workflows exist and run on pull_request and merge_group.
 # build: build.yml's job (`make lint`, `make test`), green on main since #30 (#34); a plain job,
 # so its check run is `build`, not `build / build`.
-required_checks = ["check / org-sync", "headers / licence", "title / title", "review / coderabbit", "build"]
+# swarm-core / pin: swarm-core-pin.yml's job `swarm-core` calling reusable-swarm-core-pin.yml
+# (#57, swarm-routing/.github#958); runs on pull_request, merge_group and push to main.
+required_checks = ["check / org-sync", "headers / licence", "title / title", "review / coderabbit", "build", "swarm-core / pin"]
 # Merge through a merge queue (swarm-routing/.github#130); every workflow behind a required
 # check also runs on merge_group.
 merge_queue = true
