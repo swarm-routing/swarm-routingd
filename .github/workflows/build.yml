@@ -48,7 +48,7 @@ jobs:
       # swarm-core from its vcpkg port (#31, swarm-routing/.github#489): the tool at
       # the org's pinned commit; sets VCPKG_ROOT, which `make test` reads.
       - name: vcpkg
-        uses: swarm-routing/.github/.github/actions/setup-vcpkg@841a8f45da19e3ca543e9c59b552349cb48560ff # main@2026-11-27
+        uses: swarm-routing/.github/.github/actions/setup-vcpkg@4f6ed3217d05ebccd2418617fdcd99ab7869de8e # main@2026-11-27
         timeout-minutes: 8
         with:
           # one small port; the NuGet cache's mono install costs more than it saves
