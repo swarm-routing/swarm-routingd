@@ -52,6 +52,12 @@ ruleset = "protocol"
 # swarm-core / pin: swarm-core-pin.yml's job `swarm-core` calling reusable-swarm-core-pin.yml
 # (#57, swarm-routing/.github#958); runs on pull_request, merge_group and push to main.
 required_checks = ["check / org-sync", "headers / licence", "title / title", "review / coderabbit", "build", "swarm-core / pin"]
+# Checks that run on main but gate no merge (swarm-routing/.github#781), as swarm-adapter-ns3,
+# which requires none of them: CodeQL (`Analyze (*)`) and Scorecard are code-scanning reports;
+# Sonar and CodeRabbit's own check run are report-only (`review / coderabbit` is the gate);
+# `autofix / pick` and `notify` are bot jobs; `doxygen / doxygen` (api-docs.yml) runs on
+# pull_request but not merge_group, so the merge queue could not wait on it.
+optional_checks = ["Analyze (*)", "analysis / Scorecard analysis", "SonarCloud Code Analysis", "CodeRabbit", "autofix / pick", "notify", "doxygen / doxygen"]
 # Merge through a merge queue (swarm-routing/.github#130); every workflow behind a required
 # check also runs on merge_group.
 merge_queue = true
